@@ -4,11 +4,13 @@ package grupoexitop;
 public class Nodo {
     
     private Cliente dato;
-    private Nodo siguiente;
+    private Nodo izq;
+    private Nodo der;
 
-    public Nodo(Cliente dato, Nodo siguiente) {
+    public Nodo(Cliente dato) {
         this.dato = dato;
-        this.siguiente = siguiente;
+        this.izq = null;
+        this.der = null;
     }
 
     public Cliente getDato() {
@@ -19,14 +21,22 @@ public class Nodo {
         this.dato = dato;
     }
 
-    public Nodo getSiguiente() {
-        return siguiente;
+    public Nodo getIzq() {
+        return izq;
     }
 
-    public void setSiguiente(Nodo siguiente) {
-        this.siguiente = siguiente;
+    public void setIzq(Nodo izq) {
+        this.izq = izq;
+    }
+
+    public Nodo getDer() {
+        return der;
+    }
+
+    public void setDer(Nodo der) {
+        this.der = der;
     }
     
     
-    
+ 
 }
