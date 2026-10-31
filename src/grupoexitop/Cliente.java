@@ -5,7 +5,7 @@ package grupoexitop;
 public class Cliente {
     
     
-    private int cedula;
+    private long cedula;
     private String nombre;
     private String correo;
     private String ciudad;
@@ -13,7 +13,7 @@ public class Cliente {
     private double totalCompradoAnio;
     private String categoria;
 
-    public Cliente(int cedula, String nombre, String correo, String ciudad, int puntosAcumulados, double totalCompradoAnio, String categoria) {
+    public Cliente(long cedula, String nombre, String correo, String ciudad, int puntosAcumulados, double totalCompradoAnio, String categoria) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.correo = correo;
@@ -23,11 +23,11 @@ public class Cliente {
         this.categoria = categoria;
     }
 
-    public int getCedula() {
+    public long getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(long cedula) {
         this.cedula = cedula;
     }
 
