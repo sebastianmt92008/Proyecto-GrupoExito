@@ -3,7 +3,6 @@ package grupoexitop;
 import java.util.Scanner;
 
 import java.io.*;
-// importaciones para el CSV
 
 
 public class GrupoExitoP {
