@@ -1,11 +1,13 @@
 
 package grupoexitop;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class ArbolBinarioBusqueda {
     
-    private Nodo cabeza;
-    private int tamanio;
     
     private Nodo raiz;
  
@@ -51,6 +53,43 @@ public class ArbolBinarioBusqueda {
         
         return n;
     }
+    
+    
+    public void cargarCSV(String ruta) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea = br.readLine(); // Salta el encabezado
+            int cargados = 0;
+        
+            while ((linea = br.readLine()) != null) {
+                String[] p = linea.split(",");
+                try {
+                    long cedula = Long.parseLong(p[0].trim());
+                    String nombre = p[1].trim();
+                    String correo = p[2].trim();
+                    String ciudad = p[3].trim();
+                    int puntosAcumulados = Integer.parseInt(p[4].trim());
+                    double totalCompradoAnio = Double.parseDouble(p[5].trim());
+                    String categoria = p[6].trim();
+
+                    Cliente cliente = new Cliente(cedula, nombre, correo, ciudad, puntosAcumulados, totalCompradoAnio, categoria);
+                
+                    if (insertar(cliente)) {
+                        cargados++;
+                    } else {
+                        System.out.println("Cédula repetida omitida: " + cedula);
+                    }
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Línea con formato inválido o columnas incompletas: " + linea);
+                }
+            }
+            System.out.println("¡Carga masiva finalizada! Clientes agregados al árbol: " + cargados);
+        
+        } catch (IOException e) {
+            System.out.println("¡Error crítico! No se encontró el archivo CSV en la raíz: " + e.getMessage());
+        }
+    }
+    
+    
     
     public Cliente buscar(long cedula) {
         Nodo actual = raiz;
