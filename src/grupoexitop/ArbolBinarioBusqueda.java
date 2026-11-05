@@ -1,9 +1,8 @@
 
 package grupoexitop;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 
 
 public class ArbolBinarioBusqueda {
@@ -161,9 +160,11 @@ public class ArbolBinarioBusqueda {
         }
     }
     
-    public void eliminar(long cedula) {
-    raiz = eliminar(raiz, cedula);
-}
+    public boolean eliminar(long cedula) {
+        if (buscar(cedula) == null) return false;
+        raiz = eliminar(raiz, cedula);
+        return true;
+    }
 
     private Nodo eliminar(Nodo n, long cedula) {
         if (n == null) return null;
@@ -266,6 +267,30 @@ public class ArbolBinarioBusqueda {
         return candidato;
     }
     
+    public Cliente predecesor(long cedula) {
+        Nodo actual = raiz;
+        Cliente candidato = null;
+        while (actual != null) {
+            long k = actual.getDato().getCedula();
+            if (cedula > k) {
+                candidato = actual.getDato();
+                actual = actual.getDer();
+            } else {
+                actual = actual.getIzq();
+            }
+        }
+        return candidato;
+    }
+    
+    public boolean actualizar(long cedula, String nombre, String correo, String ciudad) {
+        Cliente c = buscar(cedula);
+        if (c == null) return false;
+        c.setNombre(nombre);
+        c.setCorreo(correo);
+        c.setCiudad(ciudad);
+        return true;
+    }
+    
     public void dibujar() {
         dibujar(raiz, 0);
     }
@@ -320,6 +345,11 @@ public class ArbolBinarioBusqueda {
     }
     
     public void registrarCompra(long cedula, double valorCompra) {
+        if (valorCompra <= 0) {
+            System.out.println("El valor de la compra debe ser mayor que 0.");
+            return;
+        }
+        
         Cliente c = buscar(cedula);
         if (c != null) {
             // Sumar al total comprado en el año
@@ -345,6 +375,12 @@ public class ArbolBinarioBusqueda {
     }
     
     public void redimirPuntos(long cedula, int puntosARedimir) {
+        
+        if (puntosARedimir <= 0) {
+            System.out.println("Los puntos a redimir deben ser mayores que 0.");
+            return;
+        }
+        
         Cliente c = buscar(cedula);
         if (c != null) {
             if (c.getPuntosAcumulados() >= puntosARedimir) {
@@ -358,21 +394,28 @@ public class ArbolBinarioBusqueda {
         }
     }
     
-    public void reportesGrupoExito() {
-        System.out.println("\n--- LISTADO DE CLIENTES CATEGORÍA ORO (Ordenados por cédula) ---");
-        reporteOro(raiz);
-    }
-    
-    private void reporteOro(Nodo n) {
-        if (n == null) return;
-        reporteOro(n.getIzq());
-        if (n.getDato().getCategoria().equalsIgnoreCase("Oro")) {
-            System.out.println("Cédula: " + n.getDato().getCedula() + 
-                               " | Nombre: " + n.getDato().getNombre() + 
-                               " | Puntos: " + n.getDato().getPuntosAcumulados() + 
-                               " | Compras: $" + n.getDato().getTotalCompradoAnio());
+    public void top10() {
+        ArrayList<Cliente> lista = new ArrayList<>();
+        llenarLista(raiz, lista);
+
+        int mostrar = Math.min(10, lista.size());
+        for (int i = 1; i <= mostrar; i++) {
+            int posMayor = 0;
+            for (int j = 1; j < lista.size(); j++) {
+                if (lista.get(j).getPuntosAcumulados() > lista.get(posMayor).getPuntosAcumulados()) {
+                    posMayor = j;
+                }
+            }
+            Cliente mayor = lista.remove(posMayor);
+            System.out.println(i + ". " + mayor.getNombre() + " - " + mayor.getPuntosAcumulados() + " puntos");
         }
-        reporteOro(n.getDer());
+    }
+
+    private void llenarLista(Nodo n, ArrayList<Cliente> lista) {
+        if (n == null) return;
+        llenarLista(n.getIzq(), lista);
+        lista.add(n.getDato());
+        llenarLista(n.getDer(), lista);
     }
     
     
