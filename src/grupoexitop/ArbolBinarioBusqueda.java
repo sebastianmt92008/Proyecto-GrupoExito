@@ -418,5 +418,20 @@ public class ArbolBinarioBusqueda {
         llenarLista(n.getDer(), lista);
     }
     
-    
+    public void reportesGrupoExito() {
+        System.out.println("\n--- LISTADO DE CLIENTES CATEGORÍA ORO (Ordenados por cédula) ---");
+        reporteOro(raiz);
+    }
+
+    private void reporteOro(Nodo n) {
+        if (n == null) return;
+        reporteOro(n.getIzq());
+        if (n.getDato().getCategoria().equalsIgnoreCase("Oro")) {
+            System.out.println("Cédula: " + n.getDato().getCedula() + 
+                               " | Nombre: " + n.getDato().getNombre() + 
+                               " | Puntos: " + n.getDato().getPuntosAcumulados() + 
+                               " | Compras: $" + n.getDato().getTotalCompradoAnio());
+        }
+        reporteOro(n.getDer());
+    }
 }
