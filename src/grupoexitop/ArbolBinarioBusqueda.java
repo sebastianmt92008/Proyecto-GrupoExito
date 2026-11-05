@@ -76,16 +76,16 @@ public class ArbolBinarioBusqueda {
                     if (insertar(cliente)) {
                         cargados++;
                     } else {
-                        System.out.println("Cédula repetida omitida: " + cedula);
+                        System.out.println("Cedula repetida omitida: " + cedula);
                     }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Línea con formato inválido o columnas incompletas: " + linea);
+                    System.out.println("Linea con formato invalido o columnas incompletas: " + linea);
                 }
             }
             System.out.println("¡Carga masiva finalizada! Clientes agregados al árbol: " + cargados);
         
         } catch (IOException e) {
-            System.out.println("¡Error crítico! No se encontró el archivo CSV en la raíz: " + e.getMessage());
+            System.out.println("¡Error critico! No se encontro el archivo CSV en la raiz: " + e.getMessage());
         }
     }
     
@@ -183,11 +183,21 @@ public class ArbolBinarioBusqueda {
         return n;
     }   
     
+    public Cliente minimo() {
+        if (raiz == null) return null;
+        return minimoNodo(raiz).getDato();
+    }
+    
     private Nodo minimoNodo(Nodo n) {
         while (n.getIzq() != null) {
             n = n.getIzq();
         }
         return n;
+    }
+    
+    public Cliente maximo() {
+        if (raiz == null) return null;
+        return maximo(raiz).getDato();
     }
     
     private Nodo maximo(Nodo n) {
@@ -206,9 +216,17 @@ public class ArbolBinarioBusqueda {
         return 1 + Math.max(altura(n.getIzq()), altura(n.getDer()));
     }
     
+    public int totalNodos() {
+        return contarNodos(raiz);
+    }
+    
     private int contarNodos(Nodo n) {
         if (n == null) return 0;
         return 1 + contarNodos(n.getIzq()) + contarNodos(n.getDer());
+    }
+    
+    public int totalHojas() {
+        return contarHojas(raiz);
     }
 
     private int contarHojas(Nodo n) {
@@ -282,4 +300,80 @@ public class ArbolBinarioBusqueda {
             + totalPuntos(n.getIzq())
             + totalPuntos(n.getDer());
     }
+    
+    public void buscarPorRango(long min, long max) {
+        buscarPorRango(raiz, min, max);
+    }
+    
+    private void buscarPorRango(Nodo n, long min, long max) {
+        if (n == null) return;
+        long clave = n.getDato().getCedula();
+        if (clave > min) {
+            buscarPorRango(n.getIzq(), min, max);
+        }
+        if (clave >= min && clave <= max) {
+            System.out.println(n.getDato());
+        }
+        if (clave < max) {
+            buscarPorRango(n.getDer(), min, max);
+        }
+    }
+    
+    public void registrarCompra(long cedula, double valorCompra) {
+        Cliente c = buscar(cedula);
+        if (c != null) {
+            // Sumar al total comprado en el año
+            c.setTotalCompradoAnio(c.getTotalCompradoAnio() + valorCompra);
+            
+            // 1 punto por cada $1.000
+            int puntosNuevos = (int) (valorCompra / 1000);
+            c.setPuntosAcumulados(c.getPuntosAcumulados() + puntosNuevos);
+            
+            // Actualizar categoría
+            if (c.getTotalCompradoAnio() >= 5000000) {
+                c.setCategoria("Oro");
+            } else if (c.getTotalCompradoAnio() >= 2000000) {
+                c.setCategoria("Plata");
+            } else {
+                c.setCategoria("Clasico");
+            }
+            
+            System.out.println("¡Compra registrada! Puntos actuales: " + c.getPuntosAcumulados());
+        } else {
+            System.out.println("Cliente no encontrado.");
+        }
+    }
+    
+    public void redimirPuntos(long cedula, int puntosARedimir) {
+        Cliente c = buscar(cedula);
+        if (c != null) {
+            if (c.getPuntosAcumulados() >= puntosARedimir) {
+                c.setPuntosAcumulados(c.getPuntosAcumulados() - puntosARedimir);
+                System.out.println("¡Redención exitosa! Puntos restantes: " + c.getPuntosAcumulados());
+            } else {
+                System.out.println("Error: No tiene suficientes puntos.");
+            }
+        } else {
+            System.out.println("Cliente no encontrado.");
+        }
+    }
+    
+    public void reportesGrupoExito() {
+        System.out.println("\n--- LISTADO DE CLIENTES CATEGORÍA ORO (Ordenados por cédula) ---");
+        reporteOro(raiz);
+    }
+    
+    private void reporteOro(Nodo n) {
+        if (n == null) return;
+        reporteOro(n.getIzq());
+        if (n.getDato().getCategoria().equalsIgnoreCase("Oro")) {
+            System.out.println("Cédula: " + n.getDato().getCedula() + 
+                               " | Nombre: " + n.getDato().getNombre() + 
+                               " | Puntos: " + n.getDato().getPuntosAcumulados() + 
+                               " | Compras: $" + n.getDato().getTotalCompradoAnio());
+        }
+        reporteOro(n.getDer());
+    }
+    
+    
 }
