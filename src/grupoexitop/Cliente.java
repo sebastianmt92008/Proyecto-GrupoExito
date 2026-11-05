@@ -82,7 +82,7 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente [Cedula: " + cedula + ", Nombre: " + nombre + ", Ciudad: " + ciudad + 
-               ", Puntos: " + puntosAcumulados + ", Categoría: " + categoria + "]";
+               ", Puntos: " + puntosAcumulados + "Total comprado: " + totalCompradoAnio + ", Categoría: " + categoria + "]";
     }
     
 }
