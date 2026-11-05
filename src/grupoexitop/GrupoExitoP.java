@@ -199,6 +199,9 @@ public class GrupoExitoP {
             case 15:{
                 System.out.println("\n--- TOP 10 MEJORES CLIENTES ---");
                 arbol.top10();
+                
+                System.out.println("\n--- LISTADO DE ORO ---");
+                arbol.reportesGrupoExito();
                 break;
             }
             
