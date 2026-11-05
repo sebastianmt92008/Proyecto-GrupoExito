@@ -3,6 +3,7 @@ package grupoexitop;
 
 import java.util.Scanner;
 import java.io.*;
+import java.util.ArrayList;
 public class GrupoExitoP {
 
     static Scanner sc = new Scanner(System.in);
@@ -17,6 +18,28 @@ public class GrupoExitoP {
         sc.nextLine(); 
         return cedula;
     }
+    
+    static int leerEntero(Scanner sc, String mensaje) {
+        System.out.print(mensaje);
+        while (!sc.hasNextInt()) {
+            System.out.print(" Debes escribir un numero entero valido: ");
+            sc.next();
+        }
+        int valor = sc.nextInt();
+        sc.nextLine();
+        return valor;
+    }   
+
+    static double leerDecimal(Scanner sc, String mensaje) {
+        System.out.print(mensaje);
+        while (!sc.hasNextDouble()) {
+            System.out.print(" Debes escribir un numero valido: ");
+            sc.next();
+        }
+        double valor = sc.nextDouble();
+        sc.nextLine();
+        return valor;
+    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -29,7 +52,7 @@ public class GrupoExitoP {
             System.out.println("4. Inorden        5. Preorden       6. Postorden");
             System.out.println("7. Por niveles    8. Minimo y maximo");
             System.out.println("9. Altura y conteos  10. Buscar por rango");
-            System.out.println("11. Dibujar arbol  12. Cargar CSV de clients");
+            System.out.println("11. Dibujar arbol  12. Cargar CSV de clientes");
             System.out.println("--- OPERACIONES DEL GRUPO EXITO ---");
             System.out.println("13. Registrar compra (Acumular puntos)");
             System.out.println("14. Redimir puntos (Descontar saldo)");
@@ -45,18 +68,14 @@ public class GrupoExitoP {
             //Insertar nodo al arbol
             case 1:{
                 long cedula = leerCedula(sc, "Ingrese cedula: ");
-                sc.nextLine();
                 System.out.print("Ingrese nombre: ");
                 String nombre = sc.nextLine();
                 System.out.print("Ingrese correo: ");
                 String correo = sc.nextLine();
                 System.out.print("Ingrese ciudad: ");
                 String ciudad = sc.nextLine();
-                System.out.print("Ingrese puntos acumulados: ");
-                int puntos = sc.nextInt();
-                System.out.print("Ingrese total comprado en el ano: ");
-                double total = sc.nextDouble();
-                sc.nextLine();
+                int puntos = leerEntero(sc, "Ingrese puntos acumulados: ");
+                double total = leerDecimal(sc, "Ingrese total comprado en el ano: ");
                 System.out.print("Ingrese categoria (Clasico/Plata/Oro): ");
                 String categoria = sc.nextLine();
 
@@ -73,8 +92,7 @@ public class GrupoExitoP {
             case 2:{
                 
                 System.out.print("Ingrese cedula a buscar: ");
-                long cedulaBuscada = sc.nextLong();
-                sc.nextLine();
+                long cedulaBuscada = leerCedula(sc, "Ingrese cedula a buscar: ");
                 Cliente encontrado = arbol.buscar(cedulaBuscada);
                 if (encontrado != null) {
                     System.out.println("Encontrado: " + encontrado);
@@ -87,11 +105,12 @@ public class GrupoExitoP {
             //Eliminar nodo por cedula
             case 3:{
                 
-                System.out.print("Ingrese cedula a eliminar: ");
-                long cedulaEliminar = sc.nextLong();
-                sc.nextLine();
-                arbol.eliminar(cedulaEliminar);
-                System.out.println("Operacion de eliminacion ejecutada.");
+                long cedulaEliminar = leerCedula(sc, "Ingrese cedula a eliminar: ");
+                if (arbol.eliminar(cedulaEliminar)) {
+                    System.out.println("Cliente eliminado con exito.");
+                } else {
+                    System.out.println("No existe un cliente con esa cedula.");
+                }
         
                 break;
             }
@@ -140,11 +159,8 @@ public class GrupoExitoP {
             //buscar por rango
             case 10:{
                 
-                System.out.print("Cedula inicial: ");
-                long minRango = sc.nextLong();
-                System.out.print("Cedula final: ");
-                long maxRango = sc.nextLong();
-                sc.nextLine();
+                long minRango = leerCedula(sc, "Cedula inicial: ");
+                long maxRango = leerCedula(sc, "Cedula final: ");
                 arbol.buscarPorRango(minRango, maxRango);
                 break;
             }
@@ -164,11 +180,8 @@ public class GrupoExitoP {
             //registrar compra
             case 13:{
                 
-                System.out.print("Ingrese cedula del cliente: ");
-                long cCompra = sc.nextLong();
-                System.out.print("Ingrese valor de la compra ($): ");
-                double vCompra = sc.nextDouble();
-                sc.nextLine();
+                long cCompra = leerCedula(sc, "Ingrese cedula del cliente: ");
+                double vCompra = leerDecimal(sc, "Ingrese valor de la compra ($): ");
                 arbol.registrarCompra(cCompra, vCompra);
                 break;
             }
@@ -176,19 +189,16 @@ public class GrupoExitoP {
             //redimir puntos
             case 14:{
                 
-                System.out.print("Ingrese cedula del cliente: ");
-                long cRedimir = sc.nextLong();
-                System.out.print("Ingrese puntos a redimir: ");
-                int pRedimir = sc.nextInt();
-                sc.nextLine();
+                long cRedimir = leerCedula(sc, "Ingrese cedula del cliente: ");
+                int pRedimir = leerEntero(sc, "Ingrese puntos a redimir: ");
                 arbol.redimirPuntos(cRedimir, pRedimir);
                 break;
             }
             
             //top 10 mejores clientes
             case 15:{
-                
-                arbol.reportesGrupoExito();
+                System.out.println("\n--- TOP 10 MEJORES CLIENTES ---");
+                arbol.top10();
                 break;
             }
             
