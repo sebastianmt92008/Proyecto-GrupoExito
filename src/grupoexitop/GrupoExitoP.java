@@ -110,8 +110,11 @@ public static int leerEntero(Scanner sc) {
                 System.out.print("Ingrese cedula a eliminar: ");
                 long cedulaEliminar = leerLong(sc);
                 
-                arbol.eliminar(cedulaEliminar);
-                System.out.println("Operacion de eliminacion ejecutada.");
+                if (arbol.eliminar(cedulaEliminar)) {
+                    System.out.println("Cliente eliminado con exito.");
+                } else {
+                    System.out.println("No existe un cliente con esa cedula.");
+                }
         
                 break;
             }
@@ -208,6 +211,9 @@ public static int leerEntero(Scanner sc) {
             //top 10 mejores clientes
             case 15:{
                 
+                System.out.println("\n--- TOP 10 MEJORES CLIENTES ---");
+                arbol.top10();
+                System.out.println("\n--- LISTADO DE ORO ---");
                 arbol.reportesGrupoExito();
                 break;
             }
