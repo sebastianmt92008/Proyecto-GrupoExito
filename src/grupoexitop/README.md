@@ -27,3 +27,7 @@ Proyecto academico para la asignatura Estructura de Datos en el Instituto Tecnol
 
 * Sebastian Munoz Torres
 * Luis Felipe Madariaga Cuello
+
+## Referencias
+Hurtado Ortiz, M. A. (2026). *Árboles ITM* [Material de clase].
+Instituto Tecnológico Metropolitano.
