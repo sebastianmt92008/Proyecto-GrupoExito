@@ -4,18 +4,38 @@ package grupoexitop;
 import java.util.Scanner;
 import java.io.*;
 public class GrupoExitoP {
-
-    static Scanner sc = new Scanner(System.in);
     
-    static long leerCedula(Scanner sc, String mensaje) {
-        System.out.print(mensaje);
+public static double leerDouble(Scanner sc) {
+        while (!sc.hasNextDouble()) {
+            System.out.println("Error, por favor ingrese solo numeros.");
+            sc.next();
+
+        }
+        double doubleValido = sc.nextDouble();
+        sc.nextLine();
+        return doubleValido;
+    }
+
+public static int leerEntero(Scanner sc) {
+        while (!sc.hasNextInt()) {
+            System.out.println("Error, por favor ingrese solo numeros.");
+            sc.next();
+
+        }
+        int enteroValido = sc.nextInt();
+        sc.nextLine();
+        return enteroValido;
+    }
+
+    
+    static long leerLong(Scanner sc) {
         while (!sc.hasNextLong()) {
-            System.out.print(" Debes escribir un numero de cedula valido: ");
+            System.out.print(" Debes escribir un numero valido: ");
             sc.next();
         }
-        long cedula = sc.nextLong();
+        long longValido = sc.nextLong();
         sc.nextLine(); 
-        return cedula;
+        return longValido;
     }
 
     public static void main(String[] args) {
@@ -37,15 +57,15 @@ public class GrupoExitoP {
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
             
-            if (sc.hasNextInt()) {
-                opcion = sc.nextInt();
-                sc.nextLine();
+            
+                opcion = leerEntero(sc);
                 
         switch(opcion){
             //Insertar nodo al arbol
             case 1:{
-                long cedula = leerCedula(sc, "Ingrese cedula: ");
-                sc.nextLine();
+                System.out.println("Ingrese el numero de cedula: ");
+                long cedula = leerLong(sc);
+               
                 System.out.print("Ingrese nombre: ");
                 String nombre = sc.nextLine();
                 System.out.print("Ingrese correo: ");
@@ -53,10 +73,10 @@ public class GrupoExitoP {
                 System.out.print("Ingrese ciudad: ");
                 String ciudad = sc.nextLine();
                 System.out.print("Ingrese puntos acumulados: ");
-                int puntos = sc.nextInt();
-                System.out.print("Ingrese total comprado en el ano: ");
-                double total = sc.nextDouble();
-                sc.nextLine();
+                int puntos = leerEntero(sc);
+                System.out.print("Ingrese total comprado en el anio: ");
+                double total = leerDouble(sc);
+                
                 System.out.print("Ingrese categoria (Clasico/Plata/Oro): ");
                 String categoria = sc.nextLine();
 
@@ -73,8 +93,8 @@ public class GrupoExitoP {
             case 2:{
                 
                 System.out.print("Ingrese cedula a buscar: ");
-                long cedulaBuscada = sc.nextLong();
-                sc.nextLine();
+                long cedulaBuscada = leerLong(sc);
+                
                 Cliente encontrado = arbol.buscar(cedulaBuscada);
                 if (encontrado != null) {
                     System.out.println("Encontrado: " + encontrado);
@@ -88,8 +108,8 @@ public class GrupoExitoP {
             case 3:{
                 
                 System.out.print("Ingrese cedula a eliminar: ");
-                long cedulaEliminar = sc.nextLong();
-                sc.nextLine();
+                long cedulaEliminar = leerLong(sc);
+                
                 arbol.eliminar(cedulaEliminar);
                 System.out.println("Operacion de eliminacion ejecutada.");
         
@@ -141,10 +161,10 @@ public class GrupoExitoP {
             case 10:{
                 
                 System.out.print("Cedula inicial: ");
-                long minRango = sc.nextLong();
+                long minRango = leerLong(sc);
                 System.out.print("Cedula final: ");
-                long maxRango = sc.nextLong();
-                sc.nextLine();
+                long maxRango = leerLong(sc);
+                
                 arbol.buscarPorRango(minRango, maxRango);
                 break;
             }
@@ -165,10 +185,10 @@ public class GrupoExitoP {
             case 13:{
                 
                 System.out.print("Ingrese cedula del cliente: ");
-                long cCompra = sc.nextLong();
+                long cCompra = leerLong(sc);
                 System.out.print("Ingrese valor de la compra ($): ");
-                double vCompra = sc.nextDouble();
-                sc.nextLine();
+                double vCompra = leerDouble(sc);
+                
                 arbol.registrarCompra(cCompra, vCompra);
                 break;
             }
@@ -179,8 +199,8 @@ public class GrupoExitoP {
                 System.out.print("Ingrese cedula del cliente: ");
                 long cRedimir = sc.nextLong();
                 System.out.print("Ingrese puntos a redimir: ");
-                int pRedimir = sc.nextInt();
-                sc.nextLine();
+                int pRedimir = leerEntero(sc);
+                
                 arbol.redimirPuntos(cRedimir, pRedimir);
                 break;
             }
@@ -203,11 +223,7 @@ public class GrupoExitoP {
             }
             
         }
-        } else {
-                System.out.println("Por favor digite un numero valido.");
-                sc.next(); 
-                opcion=-1;
-            }
+        
         } while (opcion != 0);
     }
     
