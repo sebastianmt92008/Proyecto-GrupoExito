@@ -49,7 +49,7 @@ public static int leerEntero(Scanner sc) {
             System.out.println("4. Inorden        5. Preorden       6. Postorden");
             System.out.println("7. Por niveles    8. Minimo y maximo");
             System.out.println("9. Altura y conteos  10. Buscar por rango");
-            System.out.println("11. Dibujar arbol  12. Cargar CSV de clients");
+            System.out.println("11. Dibujar arbol  12. Cargar CSV de clientes");
             System.out.println("--- OPERACIONES DEL GRUPO EXITO ---");
             System.out.println("13. Registrar compra (Acumular puntos)");
             System.out.println("14. Redimir puntos (Descontar saldo)");
