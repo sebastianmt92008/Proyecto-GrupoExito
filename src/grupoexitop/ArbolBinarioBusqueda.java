@@ -434,4 +434,75 @@ public class ArbolBinarioBusqueda {
         }
         reporteOro(n.getDer());
     }
+    
+    
+    
+    private int obtenerAltura(Nodo n) {
+        return (n == null) ? 0 : n.getAltura();
+    }
+
+    private void actualizarAltura(Nodo n) {
+        n.setAltura(1 + Math.max(obtenerAltura(n.getIzq()), obtenerAltura(n.getDer())));
+    }
+
+    public int factorBalance(Nodo n) {
+        return (n == null) ? 0 : obtenerAltura(n.getIzq()) - obtenerAltura(n.getDer());
+    }
+
+    private Nodo rotarDerecha(Nodo y) {
+        Nodo x = y.getIzq();
+        y.setIzq(x.getDer());
+        x.setDer(y);
+        actualizarAltura(y);
+        actualizarAltura(x);
+        return x;
+    }
+
+    private Nodo rotarIzquierda(Nodo x) {
+        Nodo y = x.getDer();
+        x.setDer(y.getIzq());
+        y.setIzq(x);
+        actualizarAltura(x);
+        actualizarAltura(y);
+        return y;
+    }
+
+    private Nodo balancear(Nodo n) {
+        actualizarAltura(n);
+        int fb = factorBalance(n);
+
+        if (fb > 1) {
+            if (factorBalance(n.getIzq()) < 0) {
+                n.setIzq(rotarIzquierda(n.getIzq()));
+            }
+            return rotarDerecha(n); 
+        }
+
+        if (fb < -1) {
+            if (factorBalance(n.getDer()) > 0) {
+                n.setDer(rotarDerecha(n.getDer()));
+            }
+            return rotarIzquierda(n); 
+        }
+
+        return n;
+    }
+
+    public void insertarAVL(Cliente c) {
+        raiz = insertarAVL(raiz, c);
+    }
+
+    private Nodo insertarAVL(Nodo n, Cliente c) {
+        if (n == null) return new Nodo(c);
+
+        if (c.getCedula() < n.getDato().getCedula()) {
+            n.setIzq(insertarAVL(n.getIzq(), c));
+        } else if (c.getCedula() > n.getDato().getCedula()) {
+            n.setDer(insertarAVL(n.getDer(), c));
+        } else {
+            return n; 
+        }
+
+        return balancear(n);
+    }
 }
