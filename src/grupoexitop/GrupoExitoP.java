@@ -3,6 +3,7 @@ package grupoexitop;
 
 import java.util.Scanner;
 import java.io.*;
+import javax.swing.JFrame;
 public class GrupoExitoP {
     
 public static double leerDouble(Scanner sc) {
@@ -54,6 +55,7 @@ public static int leerEntero(Scanner sc) {
             System.out.println("13. Registrar compra (Acumular puntos)");
             System.out.println("14. Redimir puntos (Descontar saldo)");
             System.out.println("15. Mostrar Top 10 de clientes");
+            System.out.println("16. Dibujo del arbol");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
             
@@ -215,6 +217,14 @@ public static int leerEntero(Scanner sc) {
                 arbol.top10();
                 System.out.println("\n--- LISTADO DE ORO ---");
                 arbol.reportesGrupoExito();
+                break;
+            }
+            
+            case 16: {
+                JFrame ventana = new JFrame("Árbol de Clientes");
+                ventana.add(new PanelArbol(arbol));
+                ventana.setSize(800, 600);
+                ventana.setVisible(true);
                 break;
             }
             
