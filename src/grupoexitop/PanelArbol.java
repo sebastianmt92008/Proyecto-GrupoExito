@@ -34,9 +34,9 @@ public class PanelArbol extends JPanel {
         }
 
         g.setColor(new Color(11, 44, 90));
-        g.fillOval(x - 22, y - 22, 44, 44);
+        g.fillOval(x - 45, y - 15, 90, 30); 
 
         g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(n.getDato().getCedula() % 10000), x - 14, y + 5);
+        g.drawString(String.valueOf(n.getDato().getCedula()), x - 40, y + 5);
     }
 }
