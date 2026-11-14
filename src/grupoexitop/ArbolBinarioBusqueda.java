@@ -292,14 +292,15 @@ public class ArbolBinarioBusqueda {
     }
     
     public void dibujar() {
-        dibujar(raiz, 0);
+        dibujar(raiz, 0, "Raiz-> ");
     }
 
-    private void dibujar(Nodo n, int nivel) {
+    private void dibujar(Nodo n, int nivel, String lado) {
         if (n == null) return;
-        dibujar(n.getDer(), nivel + 1);
-        System.out.println("      ".repeat(nivel) + n.getDato().getCedula());
-        dibujar(n.getIzq(), nivel + 1);
+    
+        System.out.println("      ".repeat(nivel) + lado + n.getDato().getCedula());
+        dibujar(n.getIzq(), nivel + 1, "Izq-> ");
+        dibujar(n.getDer(), nivel + 1, "Der-> ");
     }
     
     public void filtrarPorPuntos(int limite) {
@@ -437,72 +438,66 @@ public class ArbolBinarioBusqueda {
     
     
     
-    private int obtenerAltura(Nodo n) {
-        return (n == null) ? 0 : n.getAltura();
+    private int factorBalance(Nodo n) {
+        if (n == null) return 0;
+        return altura(n.getIzq()) - altura(n.getDer());
     }
 
-    private void actualizarAltura(Nodo n) {
-        n.setAltura(1 + Math.max(obtenerAltura(n.getIzq()), obtenerAltura(n.getDer())));
-    }
-
-    public int factorBalance(Nodo n) {
-        return (n == null) ? 0 : obtenerAltura(n.getIzq()) - obtenerAltura(n.getDer());
-    }
-
-    private Nodo rotarDerecha(Nodo y) {
+    private Nodo rotacionDerecha(Nodo y) {
         Nodo x = y.getIzq();
-        y.setIzq(x.getDer());
+        Nodo T2 = x.getDer();
         x.setDer(y);
-        actualizarAltura(y);
-        actualizarAltura(x);
+        y.setIzq(T2);
         return x;
     }
 
-    private Nodo rotarIzquierda(Nodo x) {
+    private Nodo rotacionIzquierda(Nodo x) {
         Nodo y = x.getDer();
-        x.setDer(y.getIzq());
+        Nodo T2 = y.getIzq();
         y.setIzq(x);
-        actualizarAltura(x);
-        actualizarAltura(y);
+        x.setDer(T2);
         return y;
     }
 
-    private Nodo balancear(Nodo n) {
-        actualizarAltura(n);
-        int fb = factorBalance(n);
+    public void aplicarRetoAVL() {
+        if (raiz == null) {
+            System.out.println("El arbol esta vacio.");
+            return;
+        }
 
+        while (!esArbolBalanceado(raiz)) {
+            raiz = forzarBalanceo(raiz);
+        }
+    }
+
+    private boolean esArbolBalanceado(Nodo n) {
+        if (n == null) return true;
+        if (Math.abs(factorBalance(n)) > 1) return false;
+        return esArbolBalanceado(n.getIzq()) && esArbolBalanceado(n.getDer());
+    }
+
+    private Nodo forzarBalanceo(Nodo n) {
+        if (n == null) return null;
+        
+        n.setIzq(forzarBalanceo(n.getIzq()));
+        n.setDer(forzarBalanceo(n.getDer()));
+
+        int fb = factorBalance(n);
+        
         if (fb > 1) {
             if (factorBalance(n.getIzq()) < 0) {
-                n.setIzq(rotarIzquierda(n.getIzq()));
+                n.setIzq(rotacionIzquierda(n.getIzq()));
             }
-            return rotarDerecha(n); 
+            return rotacionDerecha(n);
         }
-
+        
         if (fb < -1) {
-            if (factorBalance(n.getDer()) > 0) {
-                n.setDer(rotarDerecha(n.getDer()));
+            if (factorBalance(n.getDer()) > 0) { 
+                n.setDer(rotacionDerecha(n.getDer()));
             }
-            return rotarIzquierda(n); 
+            return rotacionIzquierda(n); 
         }
-
-        return n;
-    }
-
-    public void insertarAVL(Cliente c) {
-        raiz = insertarAVL(raiz, c);
-    }
-
-    private Nodo insertarAVL(Nodo n, Cliente c) {
-        if (n == null) return new Nodo(c);
-
-        if (c.getCedula() < n.getDato().getCedula()) {
-            n.setIzq(insertarAVL(n.getIzq(), c));
-        } else if (c.getCedula() > n.getDato().getCedula()) {
-            n.setDer(insertarAVL(n.getDer(), c));
-        } else {
-            return n; 
-        }
-
-        return balancear(n);
+        
+        return n; 
     }
 }
