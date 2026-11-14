@@ -228,6 +228,13 @@ public static int leerEntero(Scanner sc) {
                 break;
             }
             
+            case 17: {
+                System.out.println("--- EJECUTANDO RETO AVL ---");
+                arbol.aplicarRetoAVL();
+                System.out.println("¡El arbol ha sido balanceado exitosamente!");
+                break;
+            }
+            
             case 0:{
                 System.out.println("Saliendo del programa....");
                 
