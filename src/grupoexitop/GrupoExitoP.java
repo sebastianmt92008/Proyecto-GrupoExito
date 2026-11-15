@@ -101,6 +101,7 @@ public static int leerEntero(Scanner sc) {
                 } else {
                         System.out.println("Cliente no encontrado.");
                 }
+                System.out.println("Comparaciones realizadas: "+arbol.getComparaciones());
                 
                 break;
             }
@@ -197,7 +198,7 @@ public static int leerEntero(Scanner sc) {
             case 14:{
                 
                 System.out.print("Ingrese cedula del cliente: ");
-                long cRedimir = sc.nextLong();
+                long cRedimir = leerLong(sc);
                 System.out.print("Ingrese puntos a redimir: ");
                 int pRedimir = leerEntero(sc);
                 

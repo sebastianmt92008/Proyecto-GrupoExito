@@ -10,7 +10,7 @@ public class ArbolBinarioBusqueda {
     
     
     private Nodo raiz;
- 
+    private int comparaciones;
     public ArbolBinarioBusqueda() {
         raiz = null;
     }
@@ -92,9 +92,11 @@ public class ArbolBinarioBusqueda {
     
     
     public Cliente buscar(long cedula) {
+        comparaciones = 0;
         Nodo actual = raiz;
         
         while (actual != null) {
+            comparaciones++;
             long clave = actual.getDato().getCedula();
             
             if (cedula == clave) {
@@ -110,6 +112,11 @@ public class ArbolBinarioBusqueda {
         
         return null; 
     }
+
+    public int getComparaciones() {
+        return comparaciones;
+    }
+    
     
     public void inorden() {
     inorden(raiz);
