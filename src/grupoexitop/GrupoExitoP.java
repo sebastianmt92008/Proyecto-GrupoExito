@@ -3,6 +3,7 @@ package grupoexitop;
 
 import java.util.Scanner;
 import java.io.*;
+import javax.swing.JFrame;
 public class GrupoExitoP {
     
 public static double leerDouble(Scanner sc) {
@@ -49,11 +50,12 @@ public static int leerEntero(Scanner sc) {
             System.out.println("4. Inorden        5. Preorden       6. Postorden");
             System.out.println("7. Por niveles    8. Minimo y maximo");
             System.out.println("9. Altura y conteos  10. Buscar por rango");
-            System.out.println("11. Dibujar arbol  12. Cargar CSV de clients");
+            System.out.println("11. Dibujar arbol  12. Cargar CSV de clientes");
             System.out.println("--- OPERACIONES DEL GRUPO EXITO ---");
             System.out.println("13. Registrar compra (Acumular puntos)");
             System.out.println("14. Redimir puntos (Descontar saldo)");
             System.out.println("15. Mostrar Top 10 de clientes");
+            System.out.println("16. Dibujo del arbol");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
             
@@ -111,8 +113,11 @@ public static int leerEntero(Scanner sc) {
                 System.out.print("Ingrese cedula a eliminar: ");
                 long cedulaEliminar = leerLong(sc);
                 
-                arbol.eliminar(cedulaEliminar);
-                System.out.println("Operacion de eliminacion ejecutada.");
+                if (arbol.eliminar(cedulaEliminar)) {
+                    System.out.println("Cliente eliminado con exito.");
+                } else {
+                    System.out.println("No existe un cliente con esa cedula.");
+                }
         
                 break;
             }
@@ -209,7 +214,25 @@ public static int leerEntero(Scanner sc) {
             //top 10 mejores clientes
             case 15:{
                 
+                System.out.println("\n--- TOP 10 MEJORES CLIENTES ---");
+                arbol.top10();
+                System.out.println("\n--- LISTADO DE ORO ---");
                 arbol.reportesGrupoExito();
+                break;
+            }
+            
+            case 16: {
+                JFrame ventana = new JFrame("Árbol de Clientes");
+                ventana.add(new PanelArbol(arbol));
+                ventana.setSize(800, 600);
+                ventana.setVisible(true);
+                break;
+            }
+            
+            case 17: {
+                System.out.println("--- EJECUTANDO RETO AVL ---");
+                arbol.aplicarRetoAVL();
+                System.out.println("¡El arbol ha sido balanceado exitosamente!");
                 break;
             }
             
@@ -230,3 +253,7 @@ public static int leerEntero(Scanner sc) {
     
 
 }
+
+
+
+

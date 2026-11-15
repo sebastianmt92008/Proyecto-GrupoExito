@@ -6,11 +6,13 @@ public class Nodo {
     private Cliente dato;
     private Nodo izq;
     private Nodo der;
+    private int altura;
 
     public Nodo(Cliente dato) {
         this.dato = dato;
         this.izq = null;
         this.der = null;
+        this.altura = 1;
     }
 
     public Cliente getDato() {
@@ -36,6 +38,15 @@ public class Nodo {
     public void setDer(Nodo der) {
         this.der = der;
     }
+
+    public int getAltura() {
+        return altura;
+    }
+
+    public void setAltura(int altura) {
+        this.altura = altura;
+    }
+    
     
     
  
